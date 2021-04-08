@@ -1,0 +1,1 @@
+{"version":3,"file":"awslambda.d.ts","sourceRoot":"","sources":["../../src/awslambda.ts"],"names":[],"mappings":"AAkBA,OAAO,EACL,mBAAmB,EACnB,mCAAmC,EAIpC,MAAM,gCAAgC,CAAC;AASxC,qBAAa,wBAAyB,SAAQ,mBAAmB;;IAK/D,IAAI;IAgDJ,OAAO,CAAC,WAAW;IAMnB,OAAO,CAAC,gBAAgB;IA+DxB,OAAO,CAAC,aAAa;CAsBtB"}
