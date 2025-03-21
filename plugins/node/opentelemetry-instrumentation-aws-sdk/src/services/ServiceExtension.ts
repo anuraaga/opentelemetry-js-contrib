@@ -15,6 +15,7 @@
  */
 import {
   DiagLogger,
+  Meter,
   Span,
   SpanAttributes,
   SpanKind,
@@ -51,4 +52,6 @@ export interface ServiceExtension {
     tracer: Tracer,
     config: AwsSdkInstrumentationConfig
   ) => void;
+
+  updateMetricInstruments?:(meter: Meter) => void;
 }

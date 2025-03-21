@@ -67,13 +67,20 @@ type V3PluginCommand = AwsV3Command<any, any, any, any, any> & {
 
 export class AwsInstrumentation extends InstrumentationBase<AwsSdkInstrumentationConfig> {
   static readonly component = 'aws-sdk';
-  private servicesExtensions: ServicesExtensions = new ServicesExtensions();
+  // initialized in callbacks from super constructor for ordering reasons.
+  private servicesExtensions!: ServicesExtensions;
 
   constructor(config: AwsSdkInstrumentationConfig = {}) {
     super(PACKAGE_NAME, PACKAGE_VERSION, config);
   }
 
   protected init(): InstrumentationModuleDefinition[] {
+    // Should always have been initialized in _updateMetricInstruments, but check again
+    // for safety.
+    if (!this.servicesExtensions) {
+      this.servicesExtensions = new ServicesExtensions();
+    }
+
     const v3MiddlewareStackFileOldVersions = new InstrumentationNodeModuleFile(
       '@aws-sdk/middleware-stack/dist/cjs/MiddlewareStack.js',
       ['>=3.1.0 <3.35.0'],
@@ -102,6 +109,7 @@ export class AwsInstrumentation extends InstrumentationBase<AwsSdkInstrumentatio
     // As of @smithy/middleware-stack@2.1.0 `constructStack` is only available
     // as a getter, so we cannot use `this._wrap()`.
     const self = this;
+    const servicesExtensions = self.servicesExtensions;
     const v3SmithyMiddlewareStack = new InstrumentationNodeModuleDefinition(
       '@smithy/middleware-stack',
       ['>=2.0.0'],
@@ -110,6 +118,7 @@ export class AwsInstrumentation extends InstrumentationBase<AwsSdkInstrumentatio
           moduleExports,
           'constructStack',
           (orig: any) => {
+            self.servicesExtensions = servicesExtensions;
             self._diag.debug('propwrapping aws-sdk v3 constructStack');
             return self._getV3ConstructStackPatch(moduleVersion, orig);
           }
@@ -463,5 +472,12 @@ export class AwsInstrumentation extends InstrumentationBase<AwsSdkInstrumentatio
     } else {
       return originalFunction();
     }
+  }
+
+  override _updateMetricInstruments() {
+    if (!this.servicesExtensions) {
+      this.servicesExtensions = new ServicesExtensions();
+    }
+    this.servicesExtensions.updateMetricInstruments(this.meter);
   }
 }
