@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Tracer, Span, DiagLogger } from '@opentelemetry/api';
+import { Tracer, Span, DiagLogger, Meter } from '@opentelemetry/api';
 import { ServiceExtension, RequestMetadata } from './ServiceExtension';
 import { SqsServiceExtension } from './sqs';
 import {
@@ -68,5 +68,11 @@ export class ServicesExtensions implements ServiceExtension {
   ) {
     const serviceExtension = this.services.get(response.request.serviceName);
     serviceExtension?.responseHook?.(response, span, tracer, config);
+  }
+
+  updateMetricInstruments(meter: Meter) {
+    for (const serviceExtension of this.services.values()) {
+      serviceExtension.updateMetricInstruments?.(meter);
+    }
   }
 }
