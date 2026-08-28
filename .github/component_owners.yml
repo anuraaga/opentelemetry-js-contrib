@@ -38,6 +38,10 @@ components:
   packages/baggage-span-processor:
     - mikegoldsmith
     - jamiedanielson
+  packages/opamp-client:
+    - anuraaga
+  packages/telemetry-policy:
+    - anuraaga
   packages/host-metrics:
     - legendecas
   packages/id-generator-aws-xray:

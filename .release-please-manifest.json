@@ -70,5 +70,7 @@
   "packages/propagator-ot-trace": "0.29.0",
   "packages/propagator-aws-xray": "2.2.0",
   "packages/propagator-aws-xray-lambda": "0.56.0",
-  "packages/instrumentation-browser-navigation": "0.14.0"
+  "packages/instrumentation-browser-navigation": "0.14.0",
+  "packages/opamp-client": "0.1.0",
+  "packages/telemetry-policy": "0.1.0"
 }

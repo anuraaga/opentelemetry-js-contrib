@@ -7,3 +7,7 @@
 !package.json
 
 /.nx
+
+# Generated protobuf code and generated type declarations.
+packages/opamp-client/lib/generated
+packages/opamp-client/types

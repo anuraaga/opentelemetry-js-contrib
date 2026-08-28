@@ -35,6 +35,11 @@ const baseConfig = tseslint.config(
       '**/coverage/**',
       '**/dist/**',
       '**/node_modules/**',
+      // Generated protobuf code and generated type declarations in the
+      // (plain JavaScript, pending TypeScript conversion) opamp-client
+      // package.
+      '**/packages/opamp-client/lib/generated/**',
+      '**/packages/opamp-client/types/**',
     ],
   },
   {
@@ -171,6 +176,17 @@ const baseConfig = tseslint.config(
       ],
       '@typescript-eslint/explicit-member-accessibility': 'off',
       'no-empty': 'off',
+    },
+  },
+
+  // The opamp-client package's mocha tests are plain JavaScript (pending
+  // TypeScript conversion) and need the mocha globals.
+  {
+    files: ['**/packages/opamp-client/test/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.mocha,
+      },
     },
   },
 

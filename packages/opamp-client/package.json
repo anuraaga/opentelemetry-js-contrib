@@ -1,0 +1,44 @@
+{
+  "name": "@opentelemetry/opamp-client",
+  "version": "0.1.0",
+  "description": "An OpAMP client for Node.js",
+  "main": "lib/index.js",
+  "types": "types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-telemetry/opentelemetry-js-contrib.git",
+    "directory": "packages/opamp-client"
+  },
+  "scripts": {
+    "clean": "rimraf types/*",
+    "compile": "tsc -p . && node -e \"const fs=require('fs');for(const f of fs.readdirSync('lib/generated'))if(f.endsWith('.d.ts'))fs.copyFileSync('lib/generated/'+f,'types/generated/'+f)\"",
+    "compile:with-dependencies": "nx run-many -t compile -p @opentelemetry/opamp-client",
+    "gen:protos": "buf generate",
+    "prepublishOnly": "npm run compile",
+    "test": "nyc mocha test/**/*.test.js"
+  },
+  "keywords": [
+    "opentelemetry",
+    "nodejs",
+    "opamp"
+  ],
+  "author": "OpenTelemetry Authors",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "^18.19.0 || >=20.6.0"
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts",
+    "types/**/*.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "~2.6.3",
+    "undici": "^6.28.0",
+    "uuid": "^11.1.0"
+  },
+  "homepage": "https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/packages/opamp-client#readme"
+}
